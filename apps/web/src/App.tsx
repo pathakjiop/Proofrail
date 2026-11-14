@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppLayout } from './layouts/AppLayout';
-import { ContextualSidebar } from './layouts/ContextualSidebar';
 
 import { OverviewView } from './features/overview/OverviewView';
 import { ProjectsView } from './features/projects/ProjectsView';
@@ -24,7 +23,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="Overview"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'Overview' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <OverviewView />
             </AppLayout>
@@ -36,7 +34,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="Projects"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'Projects' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <ProjectsView />
             </AppLayout>
@@ -48,7 +45,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="Vulnerabilities"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'Vulnerabilities' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <VulnerabilitiesView />
             </AppLayout>
@@ -60,7 +56,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="SBOM Inventory"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'SBOM Inventory' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <SbomView />
             </AppLayout>
@@ -72,7 +67,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="VEX Statements"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'VEX Statements' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <VexView />
             </AppLayout>
@@ -84,7 +78,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="Evidence Center"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'Evidence Center' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <EvidenceView />
             </AppLayout>
@@ -96,7 +89,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="CRA Readiness"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'CRA Readiness' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <CraReadinessView />
             </AppLayout>
@@ -108,7 +100,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="Integrations"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'Integrations' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <IntegrationsView />
             </AppLayout>
@@ -120,7 +111,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="Documentation"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'Documentation' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <DocsView />
             </AppLayout>
@@ -132,7 +122,6 @@ export const App: React.FC = () => {
             <AppLayout
               title="Settings"
               breadcrumbs={[{ label: 'Acme DevSec Corp' }, { label: 'Settings' }]}
-              contextualSidebar={<ContextualSidebar />}
             >
               <SettingsView />
             </AppLayout>
