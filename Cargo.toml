@@ -1,0 +1,41 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/shared",
+    "crates/domain",
+    "crates/infrastructure",
+    "crates/application",
+    "apps/api",
+    "apps/cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["VulnLedger Core Team <security@vulnledger.io>"]
+license = "Apache-2.0"
+
+[workspace.dependencies]
+tokio = { version = "1.43", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+thiserror = "2.0"
+anyhow = "1.0"
+uuid = { version = "1.13", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+sha2 = "0.10"
+hex = "0.4"
+validator = { version = "0.19", features = ["derive"] }
+clap = { version = "4.5", features = ["derive", "env"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "multipart"] }
+axum = { version = "0.8", features = ["multipart", "macros"] }
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["cors", "trace", "fs", "limit"] }
+async-trait = "0.1"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "sqlite", "postgres", "chrono", "uuid", "json", "migrate"] }
+zip = { version = "2.2", default-features = false, features = ["deflate"] }
+tempfile = "3.17"
+argon2 = "0.5"
+rand = "0.8"

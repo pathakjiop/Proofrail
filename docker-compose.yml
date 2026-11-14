@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: vulnledger-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vulnledger
+      POSTGRES_PASSWORD: vulnledger_dev_pass
+      POSTGRES_DB: vulnledger
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vulnledger -d vulnledger"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.api
+    container_name: vulnledger-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      HOST: 0.0.0.0
+      DATABASE_URL: postgres://vulnledger:vulnledger_dev_pass@db:5432/vulnledger
+      STORAGE_BACKEND: local
+      STORAGE_PATH: /app/storage
+      JWT_SECRET: production_ready_jwt_secret_value_32_characters_minimum
+      RUST_LOG: info,vulnledger=debug
+      ALLOWED_ORIGINS: "*"
+    ports:
+      - "8080:8080"
+    volumes:
+      - app_storage:/app/storage
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: vulnledger-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "3000:80"
+
+volumes:
+  pgdata:
+  app_storage:

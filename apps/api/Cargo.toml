@@ -1,0 +1,22 @@
+[package]
+name = "vulnledger-api"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+vulnledger-shared = { path = "../../crates/shared" }
+vulnledger-domain = { path = "../../crates/domain" }
+vulnledger-infrastructure = { path = "../../crates/infrastructure" }
+vulnledger-application = { path = "../../crates/application" }
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+axum.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+anyhow.workspace = true
