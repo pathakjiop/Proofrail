@@ -23,7 +23,7 @@ const DEFAULT_ORG: Organization = {
 
 const DEFAULT_USER: User = {
   id: '7b4e9f12-0000-4000-8000-000000000002',
-  email: 'founder@vulnledger.io',
+  email: 'founder@proofrail.io',
   name: 'Alex Rivera',
 };
 
@@ -234,7 +234,7 @@ const DEFAULT_VEX: VexStatement[] = [
         id: 'h-1',
         timestamp: new Date(Date.now() - 86400000).toISOString(),
         author_name: 'Alex Rivera',
-        author_email: 'founder@vulnledger.io',
+        author_email: 'founder@proofrail.io',
         status: 'not_affected',
         justification: 'inline_mitigations_already_exist',
         notes: 'Initial assessment confirmed edge mitigation is active.',

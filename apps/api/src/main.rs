@@ -31,7 +31,7 @@ async fn main() -> anyhow::Result<()> {
         )
         .init();
 
-    info!("Starting VulnLedger API Server v0.1.0...");
+    info!("Starting Proofrail API Server v0.1.0...");
 
     let storage_dir = std::env::var("STORAGE_PATH").unwrap_or_else(|_| "./storage/data".into());
     let storage = Arc::new(LocalStorageService::new(PathBuf::from(&storage_dir)));
@@ -85,7 +85,7 @@ async fn main() -> anyhow::Result<()> {
         .unwrap_or(8080);
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
 
-    info!("VulnLedger API listening on http://{}", addr);
+    info!("Proofrail API listening on http://{}", addr);
 
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;
@@ -132,7 +132,7 @@ impl IntoResponse for ApiError {
 async fn healthz_handler() -> impl IntoResponse {
     Json(serde_json::json!({
         "status": "healthy",
-        "service": "vulnledger-api",
+        "service": "proofrail-api",
         "timestamp": now_utc().to_rfc3339()
     }))
 }

@@ -106,7 +106,7 @@ export const CraReadinessView: React.FC = () => {
       <div className="p-3.5 bg-white border border-[#e5e7eb] rounded-[8px] flex items-start gap-3 text-[12.5px] text-[#374151] shadow-2xs">
         <Info size={17} className="shrink-0 mt-0.5 text-[#111827]" />
         <div>
-          <span className="font-bold text-[#111827]">Technical Evidence Management Notice:</span> VulnLedger helps engineering teams collect, structure, and verify the technical evidence required under the Cyber Resilience Act. Completing this checklist assists with regulatory preparation but does not constitute automated legal certification.
+          <span className="font-bold text-[#111827]">Technical Evidence Management Notice:</span> Proofrail helps engineering teams collect, structure, and verify the technical evidence required under the Cyber Resilience Act. Completing this checklist assists with regulatory preparation but does not constitute automated legal certification.
         </div>
       </div>
 

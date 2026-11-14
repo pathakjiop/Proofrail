@@ -17,7 +17,7 @@ export const IntegrationsView: React.FC = () => {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const githubActionYaml = `name: VulnLedger Evidence Pipeline
+  const githubActionYaml = `name: Proofrail Evidence Pipeline
 on:
   push:
     tags: ['v*']
@@ -42,15 +42,15 @@ jobs:
           format: 'json'
           output: 'trivy-results.json'
 
-      - name: Ingest & Seal in VulnLedger
+      - name: Ingest & Seal in Proofrail
         env:
-          VULNLEDGER_API_URL: \${{ secrets.VULNLEDGER_API_URL }}
-          VULNLEDGER_API_TOKEN: \${{ secrets.VULNLEDGER_TOKEN }}
+          PROOFRAIL_API_URL: \${{ secrets.PROOFRAIL_API_URL }}
+          PROOFRAIL_API_TOKEN: \${{ secrets.PROOFRAIL_TOKEN }}
         run: |
-          curl -sSL https://get.vulnledger.io | sh
-          vulnledger sbom upload --project \${{ vars.VL_PROJECT_ID }} --release \${{ github.ref_name }} ./sbom.json
-          vulnledger scan import --project \${{ vars.VL_PROJECT_ID }} --release \${{ github.ref_name }} ./trivy-results.json
-          vulnledger evidence export --project \${{ vars.VL_PROJECT_ID }} --release \${{ github.ref_name }} --out evidence.zip
+          curl -sSL https://get.proofrail.io | sh
+          proofrail sbom upload --project \${{ vars.PROOFRAIL_PROJECT_ID }} --release \${{ github.ref_name }} ./sbom.json
+          proofrail scan import --project \${{ vars.PROOFRAIL_PROJECT_ID }} --release \${{ github.ref_name }} ./trivy-results.json
+          proofrail evidence export --project \${{ vars.PROOFRAIL_PROJECT_ID }} --release \${{ github.ref_name }} --out evidence.zip
 `;
 
   return (
@@ -62,7 +62,7 @@ jobs:
             Developer & CI/CD Integrations
           </h1>
           <p className="text-[13px] text-[#6b7280] mt-0.5">
-            Connect your terminal, GitHub Actions, and container scanning pipelines to the VulnLedger evidence engine.
+            Connect your terminal, GitHub Actions, and container scanning pipelines to the Proofrail evidence engine.
           </p>
         </div>
       </div>
@@ -75,7 +75,7 @@ jobs:
               <Terminal size={16} />
             </div>
             <div>
-              <h2 className="text-[14.5px] font-bold text-[#111827]">VulnLedger Developer CLI</h2>
+              <h2 className="text-[14.5px] font-bold text-[#111827]">Proofrail Developer CLI</h2>
               <p className="text-[11.5px] text-[#6b7280]">
                 High-performance Rust CLI for local terminal workflows and headless CI automation.
               </p>
@@ -105,15 +105,15 @@ jobs:
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 text-[12px]">
           <div className="p-3 border border-[#e5e7eb] rounded-[6px] bg-[#fafafa]">
-            <span className="font-mono font-bold text-[#111827] block mb-1">vulnledger doctor</span>
+            <span className="font-mono font-bold text-[#111827] block mb-1">proofrail doctor</span>
             <span className="text-[11.5px] text-[#6b7280]">Inspect local scanners (Syft, Trivy, OSV)</span>
           </div>
           <div className="p-3 border border-[#e5e7eb] rounded-[6px] bg-[#fafafa]">
-            <span className="font-mono font-bold text-[#111827] block mb-1">vulnledger sbom validate</span>
+            <span className="font-mono font-bold text-[#111827] block mb-1">proofrail sbom validate</span>
             <span className="text-[11.5px] text-[#6b7280]">Validate CycloneDX & SPDX packages</span>
           </div>
           <div className="p-3 border border-[#e5e7eb] rounded-[6px] bg-[#fafafa]">
-            <span className="font-mono font-bold text-[#111827] block mb-1">vulnledger evidence export</span>
+            <span className="font-mono font-bold text-[#111827] block mb-1">proofrail evidence export</span>
             <span className="text-[11.5px] text-[#6b7280]">Download cryptographically sealed ZIP</span>
           </div>
         </div>
@@ -136,7 +136,7 @@ jobs:
           </Button>
         </div>
         <p className="text-[12.5px] text-[#6b7280]">
-          Add this to <span className="font-mono font-semibold text-[#111827]">.github/workflows/vulnledger.yml</span> to automatically generate SBOMs, scan for vulnerabilities, and assemble evidence on every release.
+          Add this to <span className="font-mono font-semibold text-[#111827]">.github/workflows/proofrail.yml</span> to automatically generate SBOMs, scan for vulnerabilities, and assemble evidence on every release.
         </p>
 
         <pre className="p-4 bg-[#fafafa] border border-[#e5e7eb] text-[#111827] font-mono text-[11.5px] rounded-[6px] overflow-x-auto leading-relaxed">

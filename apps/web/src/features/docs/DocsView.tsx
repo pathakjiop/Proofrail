@@ -11,7 +11,7 @@ export const DocsView: React.FC = () => {
             Documentation & Knowledge Base
           </h1>
           <p className="text-[13px] text-[#6b7280] mt-0.5">
-            Guides, specifications, and architecture references for VulnLedger supply-chain governance.
+            Guides, specifications, and architecture references for Proofrail supply-chain governance.
           </p>
         </div>
       </div>
@@ -43,7 +43,7 @@ export const DocsView: React.FC = () => {
             <h2 className="font-bold text-[14px] text-[#111827]">CLI Reference & CI Automation</h2>
           </div>
           <p className="text-[12.5px] text-[#4b5563] leading-relaxed">
-            Run <span className="font-mono text-[11px] font-semibold text-[#111827]">vulnledger</span> commands directly in local developer terminals and automated GitHub/GitLab build runners.
+            Run <span className="font-mono text-[11px] font-semibold text-[#111827]">proofrail</span> commands directly in local developer terminals and automated GitHub/GitLab build runners.
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export const DocsView: React.FC = () => {
             <h2 className="font-bold text-[14px] text-[#111827]">Self-Hosting & Docker Guide</h2>
           </div>
           <p className="text-[12.5px] text-[#4b5563] leading-relaxed">
-            Deploy VulnLedger on your own infrastructure with Docker Compose, PostgreSQL, and local volume storage.
+            Deploy Proofrail on your own infrastructure with Docker Compose, PostgreSQL, and local volume storage.
           </p>
         </div>
       </div>

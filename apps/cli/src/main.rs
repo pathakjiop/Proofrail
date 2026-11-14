@@ -7,20 +7,20 @@ use vulnledger_infrastructure::parsers::{cyclonedx, spdx};
 
 #[derive(Parser)]
 #[command(
-    name = "vulnledger",
+    name = "proofrail",
     version = "0.1.0",
-    about = "VulnLedger — Software Supply-Chain Security & Evidence CLI",
+    about = "Proofrail — Software Supply-Chain Security & Evidence CLI",
     long_about = "A developer-first CLI for validating SBOMs, orchestrating VEX exploitability decisions, and assembling cryptographic release evidence packages."
 )]
 struct Cli {
     #[arg(
         long,
-        env = "VULNLEDGER_API_URL",
+        env = "PROOFRAIL_API_URL",
         default_value = "http://localhost:8080/api/v1"
     )]
     api_url: String,
 
-    #[arg(long, env = "VULNLEDGER_API_TOKEN")]
+    #[arg(long, env = "PROOFRAIL_API_TOKEN")]
     token: Option<String>,
 
     #[command(subcommand)]
@@ -32,7 +32,7 @@ enum Commands {
     /// Verify local environment, CLI configuration, and scanner toolchain availability
     Doctor,
 
-    /// Initialize local VulnLedger workspace configuration file
+    /// Initialize local Proofrail workspace configuration file
     Init,
 
     /// Software Bill of Materials (SBOM) operations

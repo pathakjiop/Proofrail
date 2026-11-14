@@ -494,7 +494,7 @@ export const OverviewView: React.FC = () => {
         isOpen={isNewProjectOpen}
         onClose={() => setIsNewProjectOpen(false)}
         title="Create New Project"
-        description="Add a new repository or service to VulnLedger supply chain tracking."
+        description="Add a new repository or service to Proofrail supply chain tracking."
       >
         <form onSubmit={handleCreateProject} className="space-y-3.5">
           <div>

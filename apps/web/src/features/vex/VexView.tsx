@@ -83,7 +83,7 @@ export const VexView: React.FC = () => {
   const handleExportJson = (stmt: VexStatement) => {
     const exportDoc = {
       "@context": "https://openvex.dev/ns/v0.2.0",
-      "@id": `https://vulnledger.io/vex/${stmt.id}`,
+      "@id": `https://proofrail.io/vex/${stmt.id}`,
       "author": stmt.author_name,
       "timestamp": stmt.created_at,
       "version": stmt.decision_history.length,
@@ -94,7 +94,7 @@ export const VexView: React.FC = () => {
           },
           "products": [
             {
-              "@id": `pkg:vulnledger/project/${stmt.project_id}`
+              "@id": `pkg:proofrail/project/${stmt.project_id}`
             }
           ],
           "status": stmt.status,

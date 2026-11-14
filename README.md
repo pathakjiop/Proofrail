@@ -1,10 +1,14 @@
-# VulnLedger
+# Proofrail
+
+<p align="center">
+  <img src="apps/web/public/proofrail-logo.jpg" alt="Proofrail Logo" width="480" />
+</p>
 
 > **The Software Supply-Chain Security & Evidence Platform for Modern Engineering Teams.**
 
-VulnLedger is an open-core platform that manages the lifecycle of Software Bills of Materials (SBOMs), vulnerability findings, Exploitability eXchange (VEX) statements, and cryptographic release evidence.
+Proofrail is an open-core platform that manages the lifecycle of Software Bills of Materials (SBOMs), vulnerability findings, Exploitability eXchange (VEX) statements, and cryptographic release evidence.
 
-Instead of reinventing vulnerability scanners, VulnLedger serves as the **security decision, evidence, and workflow management layer** that ingests results from mature open-source security tools (Syft, Trivy, OSV-Scanner, Grype) and provides auditable proof of software security posture.
+Instead of reinventing vulnerability scanners, Proofrail serves as the **security decision, evidence, and workflow management layer** that ingests results from mature open-source security tools (Syft, Trivy, OSV-Scanner, Grype) and provides auditable proof of software security posture.
 
 ---
 
@@ -13,17 +17,17 @@ Instead of reinventing vulnerability scanners, VulnLedger serves as the **securi
 - 📦 **SBOM Inventory & Parsing**: Native ingestion and component extraction for CycloneDX and SPDX JSON formats.
 - 🎯 **Vulnerability & Exploitability Management**: Correlate findings to exact project releases and maintain auditable VEX justifications (`not_affected`, `affected`, `fixed`, `under_investigation`).
 - 🛡️ **Cryptographic Evidence Packages**: Assemble release SBOMs, VEX decisions, and scan reports into verifiable ZIP bundles with SHA-256 manifests.
-- ⚡ **Developer CLI (`vulnledger`)**: Native cross-platform Rust CLI for local terminals and CI/CD pipelines.
+- ⚡ **Developer CLI (`proofrail`)**: Native cross-platform Rust CLI for local terminals and CI/CD pipelines.
 - 🇪🇺 **CRA Readiness**: Organize technical evidence required for EU Cyber Resilience Act compliance without empty marketing claims.
-- 🖥️ **Three-Column Developer Workspace**: Minimalist, high-density, keyboard-friendly UI inspired by professional engineering tools.
+- 🖥️ **Developer Workspace**: Minimalist, high-density, keyboard-friendly UI inspired by professional engineering tools.
 
 ---
 
 ## Architecture Overview
 
-VulnLedger is organized as a clean monorepo:
+Proofrail is organized as a clean monorepo:
 - `apps/web`: React 18 + Vite + TypeScript frontend.
-- `apps/api`: REST API built with Rust (Axum, Tokio, SQLx).
+- `apps/api`: REST API built with Rust (Axum, Tokio).
 - `apps/cli`: Standalone developer CLI tool written in Rust (`clap`, `serde`, `reqwest`).
 - `crates/`: Domain, Application, Infrastructure, and Shared business logic libraries.
 
@@ -51,6 +55,9 @@ cargo run -p vulnledger-api
 cd apps/web
 npm install
 npm run dev
+
+# Terminal 3: Test the CLI
+cargo run -p vulnledger-cli --bin proofrail -- doctor
 ```
 
 ---

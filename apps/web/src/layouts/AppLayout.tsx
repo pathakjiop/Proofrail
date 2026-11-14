@@ -52,12 +52,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           {/* Top Brand Logo */}
           <div className="p-4 pb-3">
             <div className="flex items-center gap-2 mb-3.5">
-              <div className="w-6 h-6 rounded-[5px] bg-[#a3e635] flex items-center justify-center text-black font-extrabold text-[12px] tracking-tight shadow-xs">
-                VL
-              </div>
-              <span className="font-bold text-[16px] tracking-tight text-[#111827]">
-                VulnLedger
-              </span>
+              <img
+                src="/logo.png"
+                alt="Proofrail"
+                className="h-7.5 w-auto object-contain"
+              />
             </div>
 
             {/* Workspace Switcher Card */}
@@ -92,11 +91,10 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  className={`flex items-center justify-between px-3 py-2 rounded-[6px] text-[12.5px] transition-colors ${
-                    isActive
+                  className={`flex items-center justify-between px-3 py-2 rounded-[6px] text-[12.5px] transition-colors ${isActive
                       ? 'bg-[#ecfccb] text-[#111827] font-semibold'
                       : 'text-[#4b5563] hover:text-[#111827] hover:bg-[#f3f4f6] font-medium'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-2.5">
                     <Icon

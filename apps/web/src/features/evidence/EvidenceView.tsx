@@ -204,7 +204,7 @@ export const EvidenceView: React.FC = () => {
                   Cryptographic Integrity Guarantee:
                 </div>
                 <div>
-                  Each artifact inside this package is hashed at build-time with SHA-256, cryptographically sealed inside <span className="font-mono text-[#111827]">manifest.json</span>, and archived.
+                  Each artifact inside this package is hashed at build-time with SHA-256, cryptographically sealed inside <span className="font-mono text-[#111827]">manifest.json</span>, and archived according to the Proofrail Tamper-Evident Standard.
                 </div>
               </div>
             </div>

@@ -120,7 +120,7 @@ impl EvidencePackager {
             product_id: product_identifier.to_string(),
             release_version: release_version.to_string(),
             generated_at: now_utc().to_rfc3339(),
-            generator: "VulnLedger Evidence Engine v0.1.0".to_string(),
+            generator: "Proofrail Evidence Engine v0.1.0".to_string(),
             files: manifest_items,
         };
 
