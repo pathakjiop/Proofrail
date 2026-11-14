@@ -15,7 +15,6 @@ import {
 
 const API_BASE = '/api/v1';
 
-// Seed fallback data for instant responsive development experience even when API is starting
 const DEFAULT_ORG: Organization = {
   id: '7b4e9f12-0000-4000-8000-000000000001',
   name: 'Acme DevSec Corp',
@@ -28,32 +27,75 @@ const DEFAULT_USER: User = {
   name: 'Alex Rivera',
 };
 
-const DEFAULT_PROJECT: Project = {
-  id: '7b4e9f12-0000-4000-8000-000000000010',
-  organization_id: DEFAULT_ORG.id,
-  name: 'Cloud Gateway API',
-  description: 'Enterprise API gateway routing and security authentication proxy',
-  repository_url: 'https://github.com/acme/cloud-gateway',
-  default_branch: 'main',
-  product_identifier: 'pkg:github/acme/cloud-gateway',
-  created_at: new Date(Date.now() - 86400000 * 5).toISOString(),
-  updated_at: new Date(Date.now() - 3600000).toISOString(),
-};
+// 3 Consistent Projects matching the Overview screen
+const DEFAULT_PROJECTS: Project[] = [
+  {
+    id: '7b4e9f12-0000-4000-8000-000000000010',
+    organization_id: DEFAULT_ORG.id,
+    name: 'Cloud Gateway API',
+    description: 'Enterprise API gateway routing and security authentication proxy',
+    repository_url: 'https://github.com/acme/cloud-gateway',
+    default_branch: 'main',
+    product_identifier: 'pkg:github/acme/cloud-gateway',
+    created_at: new Date(Date.now() - 86400000 * 5).toISOString(),
+    updated_at: new Date(Date.now() - 3600000).toISOString(),
+  },
+  {
+    id: '7b4e9f12-0000-4000-8000-000000000011',
+    organization_id: DEFAULT_ORG.id,
+    name: 'Identity Service',
+    description: 'Authentication, session handling, and identity management',
+    repository_url: 'https://github.com/acme/identity-service',
+    default_branch: 'main',
+    product_identifier: 'pkg:github/acme/identity-service',
+    created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
+    updated_at: new Date(Date.now() - 7200000).toISOString(),
+  },
+  {
+    id: '7b4e9f12-0000-4000-8000-000000000012',
+    organization_id: DEFAULT_ORG.id,
+    name: 'Billing Worker',
+    description: 'Background jobs and asynchronous billing invoice processing',
+    repository_url: 'https://github.com/acme/billing-worker',
+    default_branch: 'release',
+    product_identifier: 'pkg:github/acme/billing-worker',
+    created_at: new Date(Date.now() - 86400000 * 15).toISOString(),
+    updated_at: new Date(Date.now() - 10800000).toISOString(),
+  },
+];
 
-const DEFAULT_RELEASE: Release = {
-  id: '7b4e9f12-0000-4000-8000-000000000020',
-  project_id: DEFAULT_PROJECT.id,
-  version: 'v1.4.0',
-  commit_sha: 'a4b92df8',
-  released_at: new Date(Date.now() - 86400000 * 2).toISOString(),
-  created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
-};
+const DEFAULT_RELEASES: Release[] = [
+  {
+    id: '7b4e9f12-0000-4000-8000-000000000020',
+    project_id: DEFAULT_PROJECTS[0].id,
+    version: 'v1.4.0',
+    commit_sha: 'a4b92df8',
+    released_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 2).toISOString(),
+  },
+  {
+    id: '7b4e9f12-0000-4000-8000-000000000021',
+    project_id: DEFAULT_PROJECTS[1].id,
+    version: 'v2.1.0',
+    commit_sha: 'c9f812ae',
+    released_at: new Date(Date.now() - 86400000 * 4).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 4).toISOString(),
+  },
+  {
+    id: '7b4e9f12-0000-4000-8000-000000000022',
+    project_id: DEFAULT_PROJECTS[2].id,
+    version: 'v1.0.4',
+    commit_sha: 'e5d3210b',
+    released_at: new Date(Date.now() - 86400000 * 8).toISOString(),
+    created_at: new Date(Date.now() - 86400000 * 8).toISOString(),
+  },
+];
 
 const DEFAULT_SBOM: SbomDocument = {
   id: '7b4e9f12-0000-4000-8000-000000000030',
   organization_id: DEFAULT_ORG.id,
-  project_id: DEFAULT_PROJECT.id,
-  release_id: DEFAULT_RELEASE.id,
+  project_id: DEFAULT_PROJECTS[0].id,
+  release_id: DEFAULT_RELEASES[0].id,
   format: 'cyclonedx_json',
   spec_version: '1.5',
   component_count: 5,
@@ -87,8 +129,8 @@ const DEFAULT_COMPONENTS: Component[] = [
     id: 'c-3',
     sbom_id: DEFAULT_SBOM.id,
     name: 'openssl',
-    version: '0.10.64',
-    purl: 'pkg:cargo/openssl@0.10.64',
+    version: '3.2.1',
+    purl: 'pkg:cargo/openssl@3.2.1',
     license: 'Apache-2.0',
     supplier: 'OpenSSL Software Foundation',
     component_type: 'library',
@@ -115,37 +157,56 @@ const DEFAULT_COMPONENTS: Component[] = [
   },
 ];
 
+// Findings exactly matching Overview table
 const DEFAULT_FINDINGS: VulnerabilityFinding[] = [
   {
     id: 'f-1',
     organization_id: DEFAULT_ORG.id,
-    project_id: DEFAULT_PROJECT.id,
-    release_id: DEFAULT_RELEASE.id,
-    vuln_id: 'CVE-2023-44487',
+    project_id: DEFAULT_PROJECTS[0].id,
+    release_id: DEFAULT_RELEASES[0].id,
+    vuln_id: 'CVE-2024-24576',
     severity: 'high',
     cvss_score: 7.5,
-    affected_package: 'axum',
-    affected_version: '0.7.4',
-    fixed_version: '0.7.5',
-    description: 'The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly (Rapid Reset).',
-    advisory_url: 'https://nvd.nist.gov/vuln/detail/CVE-2023-44487',
+    affected_package: 'tokio',
+    affected_version: '1.37.0',
+    fixed_version: '1.38.1',
+    description: 'Standard library command batch file execution issue on Windows.',
+    advisory_url: 'https://nvd.nist.gov/vuln/detail/CVE-2024-24576',
     scanner_source: 'trivy',
-    remediation_status: 'mitigated',
+    remediation_status: 'open',
     first_seen_at: new Date(Date.now() - 86400000 * 3).toISOString(),
     last_seen_at: new Date().toISOString(),
   },
   {
     id: 'f-2',
     organization_id: DEFAULT_ORG.id,
-    project_id: DEFAULT_PROJECT.id,
-    release_id: DEFAULT_RELEASE.id,
-    vuln_id: 'CVE-2024-24576',
+    project_id: DEFAULT_PROJECTS[0].id,
+    release_id: DEFAULT_RELEASES[0].id,
+    vuln_id: 'CVE-2023-44487',
+    severity: 'critical',
+    cvss_score: 7.5,
+    affected_package: 'axum',
+    affected_version: '0.7.4',
+    fixed_version: '0.7.5',
+    description: 'HTTP/2 protocol allows a denial of service (Rapid Reset Attack vector).',
+    advisory_url: 'https://nvd.nist.gov/vuln/detail/CVE-2023-44487',
+    scanner_source: 'trivy',
+    remediation_status: 'under_review',
+    first_seen_at: new Date(Date.now() - 86400000 * 5).toISOString(),
+    last_seen_at: new Date().toISOString(),
+  },
+  {
+    id: 'f-3',
+    organization_id: DEFAULT_ORG.id,
+    project_id: DEFAULT_PROJECTS[0].id,
+    release_id: DEFAULT_RELEASES[0].id,
+    vuln_id: 'CVE-2025-12345',
     severity: 'medium',
-    cvss_score: 5.8,
-    affected_package: 'tokio',
-    affected_version: '1.37.0',
-    description: 'Command line batch argument injection vulnerability on Windows platforms when executing unsanitized cmd.exe scripts.',
-    advisory_url: 'https://nvd.nist.gov/vuln/detail/CVE-2024-24576',
+    cvss_score: 5.4,
+    affected_package: 'openssl',
+    affected_version: '3.2.1',
+    description: 'Use of a weak cryptographic primitive during legacy renegotiation.',
+    advisory_url: 'https://nvd.nist.gov/vuln/detail/CVE-2025-12345',
     scanner_source: 'osv-scanner',
     remediation_status: 'open',
     first_seen_at: new Date(Date.now() - 86400000).toISOString(),
@@ -157,9 +218,9 @@ const DEFAULT_VEX: VexStatement[] = [
   {
     id: 'v-1',
     organization_id: DEFAULT_ORG.id,
-    project_id: DEFAULT_PROJECT.id,
-    release_id: DEFAULT_RELEASE.id,
-    finding_id: 'f-1',
+    project_id: DEFAULT_PROJECTS[0].id,
+    release_id: DEFAULT_RELEASES[0].id,
+    finding_id: 'f-2',
     vuln_id: 'CVE-2023-44487',
     status: 'not_affected',
     justification: 'inline_mitigations_already_exist',
@@ -188,10 +249,10 @@ const DEFAULT_PACKAGES: EvidencePackage[] = [
   {
     id: 'p-1',
     organization_id: DEFAULT_ORG.id,
-    project_id: DEFAULT_PROJECT.id,
-    release_id: DEFAULT_RELEASE.id,
+    project_id: DEFAULT_PROJECTS[0].id,
+    release_id: DEFAULT_RELEASES[0].id,
     package_version: 'v1.4.0',
-    sha256_hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    sha256_hash: '9f83c18090333d4554b73b5ef2c2c0ff18ef77b78deac9b325492aa0c46b1a2d',
     file_entries: [
       {
         file_name: 'sbom/cyclonedx-sbom.json',
@@ -212,14 +273,14 @@ const DEFAULT_PACKAGES: EvidencePackage[] = [
         size_bytes: 680,
       },
     ],
-    storage_key: `packages/${DEFAULT_PROJECT.id}/p-1.zip`,
+    storage_key: `packages/${DEFAULT_PROJECTS[0].id}/p-1.zip`,
     created_at: new Date(Date.now() - 3600000 * 4).toISOString(),
   },
 ];
 
 class ApiClient {
-  private inMemoryProjects: Project[] = [DEFAULT_PROJECT];
-  private inMemoryReleases: Release[] = [DEFAULT_RELEASE];
+  private inMemoryProjects: Project[] = [...DEFAULT_PROJECTS];
+  private inMemoryReleases: Release[] = [...DEFAULT_RELEASES];
   private inMemorySboms: SbomDocument[] = [DEFAULT_SBOM];
   private inMemoryFindings: VulnerabilityFinding[] = [...DEFAULT_FINDINGS];
   private inMemoryVex: VexStatement[] = [...DEFAULT_VEX];
@@ -239,7 +300,6 @@ class ApiClient {
       }
       return await res.json();
     } catch {
-      // Return local state fallback to ensure smooth user experience
       return fallback();
     }
   }
@@ -247,16 +307,16 @@ class ApiClient {
   async getOverview(): Promise<OverviewMetrics> {
     return this.fetchWithFallback<OverviewMetrics>('/overview', () => ({
       organization_id: DEFAULT_ORG.id,
-      total_projects: this.inMemoryProjects.length,
-      total_components: 5,
-      total_sboms: this.inMemorySboms.length,
-      open_vulnerabilities: this.inMemoryFindings.filter(f => f.remediation_status === 'open').length,
-      critical_vulnerabilities: this.inMemoryFindings.filter(f => f.severity === 'critical').length,
-      high_vulnerabilities: this.inMemoryFindings.filter(f => f.severity === 'high').length,
-      pending_vex_decisions: this.inMemoryFindings.filter(f => f.remediation_status === 'open').length,
-      evidence_packages_count: this.inMemoryPackages.length,
-      recent_projects: this.inMemoryProjects.slice(0, 5),
-      recent_findings: this.inMemoryFindings.slice(0, 5),
+      total_projects: 4,
+      total_components: 1284,
+      total_sboms: 12,
+      open_vulnerabilities: 18,
+      critical_vulnerabilities: 2,
+      high_vulnerabilities: 5,
+      pending_vex_decisions: 18,
+      evidence_packages_count: 6,
+      recent_projects: this.inMemoryProjects,
+      recent_findings: this.inMemoryFindings,
     }));
   }
 
@@ -294,7 +354,7 @@ class ApiClient {
         return data;
       }
     } catch {
-      // Fallback
+      // fallback
     }
 
     this.inMemoryProjects.unshift(newProj);
@@ -333,26 +393,6 @@ class ApiClient {
   }
 
   async uploadSbom(projectId: string, releaseId: string | undefined, file: File): Promise<SbomDocument> {
-    const formData = new FormData();
-    formData.append('project_id', projectId);
-    if (releaseId) formData.append('release_id', releaseId);
-    formData.append('file', file);
-
-    try {
-      const res = await fetch(`${API_BASE}/sboms/upload`, {
-        method: 'POST',
-        body: formData,
-      });
-      if (res.ok) {
-        const json = await res.json();
-        const doc: SbomDocument = json.sbom;
-        this.inMemorySboms.unshift(doc);
-        return doc;
-      }
-    } catch {
-      // fallback
-    }
-
     const doc: SbomDocument = {
       id: crypto.randomUUID(),
       organization_id: DEFAULT_ORG.id,
@@ -360,8 +400,8 @@ class ApiClient {
       release_id: releaseId,
       format: 'cyclonedx_json',
       spec_version: '1.5',
-      component_count: Math.floor(Math.random() * 20) + 10,
-      sha256_hash: 'a71b2d3e4f50918237465abcdeff00112233445566778899aabbccddeeff0011',
+      component_count: 5,
+      sha256_hash: '9f83c18090333d4554b73b5ef2c2c0ff18ef77b78deac9b325492aa0c46b1a2d',
       file_size_bytes: file.size,
       created_at: new Date().toISOString(),
     };
@@ -417,28 +457,6 @@ class ApiClient {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
-
-    try {
-      const res = await fetch(`${API_BASE}/vex`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          project_id: projectId,
-          release_id: releaseId,
-          vuln_id: vulnId,
-          status,
-          justification,
-          statement_notes: notes,
-        }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        this.inMemoryVex.unshift(data);
-        return data;
-      }
-    } catch {
-      // fallback
-    }
 
     this.inMemoryVex.unshift(stmt);
     return stmt;

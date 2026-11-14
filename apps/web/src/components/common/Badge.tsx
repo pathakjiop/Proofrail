@@ -3,7 +3,7 @@ import { Severity, VexStatus, RemediationStatus } from '../../types';
 
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'neutral';
+  variant?: 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'neutral';
   size?: 'sm' | 'md';
   className?: string;
 }
@@ -15,22 +15,23 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
 }) => {
   const variantStyles = {
-    default: 'bg-[#f7f8fa] text-[#4b5563] border-[#e5e7eb]',
-    primary: 'bg-[#eff6ff] text-[#1677ff] border-[#bfdbfe]',
-    success: 'bg-[#f0fdf4] text-[#16a34a] border-[#bbf7d0]',
-    warning: 'bg-[#fffbeb] text-[#d97706] border-[#fde68a]',
-    danger: 'bg-[#fef2f2] text-[#dc2626] border-[#fecaca]',
+    default: 'bg-[#f3f4f6] text-[#4b5563] border-[#e5e7eb]',
+    primary: 'bg-[#ecfccb] text-[#3f6212] border-[#d9f99d]',
+    success: 'bg-[#dcfce7] text-[#15803d] border-[#bbf7d0]',
+    warning: 'bg-[#fef3c7] text-[#b45309] border-[#fde68a]',
+    danger: 'bg-[#fee2e2] text-[#b91c1c] border-[#fecaca]',
+    info: 'bg-[#dbeafe] text-[#1d4ed8] border-[#bfdbfe]',
     neutral: 'bg-[#f3f4f6] text-[#374151] border-[#e5e7eb]',
   };
 
   const sizeStyles = {
-    sm: 'text-[11px] px-1.5 py-0.5 leading-none font-medium',
-    md: 'text-[12px] px-2 py-1 leading-none font-medium',
+    sm: 'text-[11px] px-2 py-0.5 leading-none font-medium rounded-[4px]',
+    md: 'text-[12px] px-2.5 py-1 leading-none font-medium rounded-[5px]',
   };
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-[3px] border ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      className={`inline-flex items-center gap-1 border ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
     >
       {children}
     </span>
@@ -44,7 +45,11 @@ export const SeverityBadge: React.FC<{ severity: Severity }> = ({ severity }) =>
     case 'high':
       return <Badge variant="warning">High</Badge>;
     case 'medium':
-      return <Badge variant="neutral">Medium</Badge>;
+      return (
+        <span className="text-[11px] font-medium px-2 py-0.5 rounded-[4px] border bg-[#fef9c3] text-[#a16207] border-[#fef08a]">
+          Medium
+        </span>
+      );
     case 'low':
       return <Badge variant="default">Low</Badge>;
     default:
@@ -59,7 +64,7 @@ export const VexStatusBadge: React.FC<{ status: VexStatus }> = ({ status }) => {
     case 'affected':
       return <Badge variant="danger">Affected</Badge>;
     case 'fixed':
-      return <Badge variant="primary">Fixed</Badge>;
+      return <Badge variant="info">Fixed</Badge>;
     case 'under_investigation':
       return <Badge variant="warning">Under Investigation</Badge>;
     default:
@@ -72,9 +77,9 @@ export const RemediationBadge: React.FC<{ status: RemediationStatus }> = ({ stat
     case 'resolved':
       return <Badge variant="success">Resolved</Badge>;
     case 'mitigated':
-      return <Badge variant="primary">Mitigated</Badge>;
+      return <Badge variant="info">Mitigated</Badge>;
     case 'under_review':
-      return <Badge variant="warning">Under Review</Badge>;
+      return <Badge variant="info">In Review</Badge>;
     case 'open':
       return <Badge variant="danger">Open</Badge>;
     case 'ignored':

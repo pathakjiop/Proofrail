@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Boxes,
   Upload,
-  FileCheck,
   Hash,
-  Download,
   Search,
-  Filter,
-  CheckCircle2,
   Package,
 } from 'lucide-react';
 import { api } from '../../lib/api';
@@ -22,7 +17,6 @@ export const SbomView: React.FC = () => {
   const [components, setComponents] = useState<Component[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [releases, setReleases] = useState<Release[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchComp, setSearchComp] = useState('');
 
   // Upload Modal State
@@ -50,7 +44,6 @@ export const SbomView: React.FC = () => {
       const comps = await api.getComponents(sbomList[0].id);
       setComponents(comps);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -82,35 +75,37 @@ export const SbomView: React.FC = () => {
   );
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e5e7eb] pb-4">
+    <div className="space-y-6">
+      {/* PAGE HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-[18px] font-semibold text-[#111827]">SBOM Inventory & Components</h1>
-          <p className="text-[12px] text-[#6b7280] mt-0.5">
+          <h1 className="text-[24px] font-bold text-[#111827] tracking-tight">
+            SBOM Inventory & Components
+          </h1>
+          <p className="text-[13px] text-[#6b7280] mt-0.5">
             Ingest, parse, and validate CycloneDX and SPDX Software Bills of Materials with cryptographic proof.
           </p>
         </div>
-        <Button
-          variant="primary"
-          size="sm"
-          icon={<Upload size={13} />}
+
+        <button
           onClick={() => setIsUploadOpen(true)}
+          className="inline-flex items-center gap-1.5 h-8 px-3.5 text-[12.5px] font-semibold text-black bg-[#a3e635] hover:bg-[#84cc16] rounded-[6px] transition-colors shadow-xs"
         >
+          <Upload size={14} className="stroke-[2.5]" />
           Upload SBOM
-        </Button>
+        </button>
       </div>
 
-      {/* Main Split Layout: Left SBOM Document Cards, Right Extracted Components */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Left Column: SBOM Documents List */}
-        <div className="lg:col-span-1 space-y-2.5">
-          <div className="text-[12px] font-semibold text-[#374151] px-1 flex items-center justify-between">
+      {/* MAIN SPLIT GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Left Column: SBOM Documents List (Col 4) */}
+        <div className="lg:col-span-4 space-y-3">
+          <div className="text-[12px] font-bold text-[#111827] px-1 flex items-center justify-between">
             <span>Uploaded SBOMs ({sboms.length})</span>
             <span className="text-[#6b7280] text-[11px] font-normal">CycloneDX & SPDX</span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {sboms.map((s) => {
               const isSelected = selectedSbom?.id === s.id;
               const formatLabel = s.format === 'cyclonedx_json' ? 'CycloneDX JSON' : 'SPDX JSON';
@@ -119,27 +114,27 @@ export const SbomView: React.FC = () => {
                 <div
                   key={s.id}
                   onClick={() => handleSelectSbom(s)}
-                  className={`p-3 rounded-[4px] border cursor-pointer transition-all ${
+                  className={`p-3.5 rounded-[8px] border cursor-pointer transition-all shadow-2xs ${
                     isSelected
-                      ? 'border-[#1677ff] bg-[#f0f7ff]/40 shadow-2xs'
+                      ? 'border-[#111827] bg-[#f7fee7]/40 ring-1 ring-[#111827]'
                       : 'border-[#e5e7eb] bg-white hover:bg-[#fbfbfc]'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center justify-between mb-1.5">
                     <Badge variant={s.format === 'cyclonedx_json' ? 'primary' : 'neutral'}>
                       {formatLabel} v{s.spec_version}
                     </Badge>
-                    <span className="text-[11px] font-semibold text-[#111827]">
+                    <span className="text-[11.5px] font-bold text-[#111827]">
                       {s.component_count} components
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-[11px] font-mono text-[#6b7280] mt-2 truncate">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#6b7280] mt-2 truncate">
                     <Hash size={12} className="shrink-0 text-[#9ca3af]" />
                     <span className="truncate">{s.sha256_hash}</span>
                   </div>
 
-                  <div className="mt-2 text-[10px] text-[#9ca3af] flex justify-between">
+                  <div className="mt-2 text-[10.5px] text-[#9ca3af] flex justify-between">
                     <span>Size: {(s.file_size_bytes / 1024).toFixed(1)} KB</span>
                     <span>{new Date(s.created_at).toLocaleDateString()}</span>
                   </div>
@@ -149,75 +144,74 @@ export const SbomView: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Component Inventory Table */}
-        <div className="lg:col-span-2 border border-[#e5e7eb] rounded-[4px] bg-white overflow-hidden flex flex-col">
-          {/* Component Search & Info Bar */}
-          <div className="p-3 border-b border-[#e5e7eb] bg-[#fbfbfc] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-            <div>
-              <div className="text-[13px] font-semibold text-[#111827] flex items-center gap-1.5">
-                <Package size={14} className="text-[#1677ff]" />
-                <span>Extracted Components</span>
-                <span className="text-[11px] text-[#6b7280] font-normal">
-                  ({filteredComponents.length} items)
-                </span>
+        {/* Right Column: Extracted Components Table (Col 8) */}
+        <div className="lg:col-span-8 rounded-[8px] border border-[#e5e7eb] bg-white p-5 shadow-2xs flex flex-col justify-between">
+          <div>
+            {/* Search Bar & Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#f0f0f0] mb-3">
+              <div className="flex items-center gap-2">
+                <Package size={17} className="text-[#111827]" />
+                <h2 className="text-[14.5px] font-bold text-[#111827]">
+                  Extracted Components ({filteredComponents.length})
+                </h2>
+              </div>
+
+              <div className="relative">
+                <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#9ca3af]" />
+                <input
+                  type="text"
+                  placeholder="Filter components..."
+                  value={searchComp}
+                  onChange={(e) => setSearchComp(e.target.value)}
+                  className="h-7.5 w-48 pl-7 pr-2.5 text-[11.5px] bg-[#f9fafb] border border-[#e5e7eb] rounded-[5px] focus:outline-none focus:border-[#111827] focus:bg-white"
+                />
               </div>
             </div>
 
-            <div className="relative">
-              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#9ca3af]" />
-              <input
-                type="text"
-                placeholder="Search packages, licenses..."
-                value={searchComp}
-                onChange={(e) => setSearchComp(e.target.value)}
-                className="h-7 w-48 pl-7 pr-2.5 text-[11px] bg-white border border-[#e5e7eb] rounded-[3px] focus:outline-none focus:border-[#1677ff]"
-              />
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-[#e5e7eb] bg-[#f7f8fa] text-[11px] font-medium text-[#6b7280] uppercase tracking-wider">
-                  <th className="px-3.5 py-2">Component Name</th>
-                  <th className="px-3.5 py-2">Version</th>
-                  <th className="px-3.5 py-2">License</th>
-                  <th className="px-3.5 py-2">Supplier</th>
-                  <th className="px-3.5 py-2">Type</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#e5e7eb] text-[12px]">
-                {filteredComponents.map((c) => (
-                  <tr key={c.id} className="hover:bg-[#fbfbfc] transition-colors">
-                    <td className="px-3.5 py-2.5 font-medium text-[#111827]">
-                      <div>{c.name}</div>
-                      {c.purl && (
-                        <div className="text-[10px] font-mono text-[#6b7280] truncate max-w-xs">
-                          {c.purl}
-                        </div>
-                      )}
-                    </td>
-                    <td className="px-3.5 py-2.5 font-mono text-[#4b5563]">
-                      {c.version}
-                    </td>
-                    <td className="px-3.5 py-2.5">
-                      {c.license ? (
-                        <Badge variant="neutral">{c.license}</Badge>
-                      ) : (
-                        <span className="text-[11px] text-[#9ca3af]">None</span>
-                      )}
-                    </td>
-                    <td className="px-3.5 py-2.5 text-[#4b5563]">
-                      {c.supplier || '—'}
-                    </td>
-                    <td className="px-3.5 py-2.5 text-[11px] text-[#6b7280] capitalize">
-                      {c.component_type}
-                    </td>
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="text-[11px] font-semibold text-[#9ca3af] uppercase tracking-wider pb-2 border-b border-[#f5f5f5]">
+                    <th className="pb-2">NAME</th>
+                    <th className="pb-2">VERSION</th>
+                    <th className="pb-2">LICENSE</th>
+                    <th className="pb-2">SUPPLIER</th>
+                    <th className="pb-2">TYPE</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-[#f5f5f5] text-[12px]">
+                  {filteredComponents.map((c) => (
+                    <tr key={c.id} className="hover:bg-[#fbfbfc] transition-colors">
+                      <td className="py-2.5 font-bold text-[#111827]">
+                        <div>{c.name}</div>
+                        {c.purl && (
+                          <div className="text-[10px] font-mono text-[#6b7280] truncate max-w-xs font-normal">
+                            {c.purl}
+                          </div>
+                        )}
+                      </td>
+                      <td className="py-2.5 font-mono text-[#4b5563]">
+                        {c.version}
+                      </td>
+                      <td className="py-2.5">
+                        {c.license ? (
+                          <Badge variant="neutral">{c.license}</Badge>
+                        ) : (
+                          <span className="text-[11px] text-[#9ca3af]">None</span>
+                        )}
+                      </td>
+                      <td className="py-2.5 text-[#4b5563]">
+                        {c.supplier || '—'}
+                      </td>
+                      <td className="py-2.5 text-[11px] text-[#6b7280] capitalize">
+                        {c.component_type}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -237,7 +231,7 @@ export const SbomView: React.FC = () => {
             <select
               value={targetProjectId}
               onChange={(e) => setTargetProjectId(e.target.value)}
-              className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#1677ff]"
+              className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#111827]"
             >
               {projects.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -254,7 +248,7 @@ export const SbomView: React.FC = () => {
             <select
               value={targetReleaseId}
               onChange={(e) => setTargetReleaseId(e.target.value)}
-              className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#1677ff]"
+              className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#111827]"
             >
               <option value="">(None / General Baseline)</option>
               {releases.map((r) => (
@@ -278,20 +272,21 @@ export const SbomView: React.FC = () => {
                   setSbomFile(e.target.files[0]);
                 }
               }}
-              className="w-full text-[12px] file:mr-3 file:py-1 file:px-2.5 file:rounded-[3px] file:border file:border-[#e5e7eb] file:text-[11px] file:font-medium file:bg-[#f7f8fa] file:text-[#374151] hover:file:bg-[#eceef2] text-[#6b7280]"
+              className="w-full text-[12px] file:mr-3 file:py-1 file:px-2.5 file:rounded-[4px] file:border file:border-[#e5e7eb] file:text-[11px] file:font-semibold file:bg-[#f9fafb] file:text-[#374151] hover:file:bg-[#eceef2] text-[#6b7280]"
             />
-            <p className="text-[11px] text-[#9ca3af] mt-1">
-              Supports CycloneDX v1.4/v1.5 and SPDX 2.2/2.3 specifications.
-            </p>
           </div>
 
           <div className="flex justify-end gap-2 pt-3 border-t border-[#e5e7eb]">
             <Button variant="secondary" onClick={() => setIsUploadOpen(false)}>
               Cancel
             </Button>
-            <Button variant="primary" type="submit" loading={uploading}>
+            <button
+              type="submit"
+              disabled={uploading}
+              className="px-3.5 py-1.5 text-[12.5px] font-semibold text-black bg-[#a3e635] hover:bg-[#84cc16] rounded-[4px] transition-colors"
+            >
               Upload & Parse
-            </Button>
+            </button>
           </div>
         </form>
       </Modal>

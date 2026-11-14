@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
-  FileCheck2,
+  Code2,
   Plus,
   Download,
   CheckCircle,
   Clock,
   User,
   History,
-  ShieldAlert,
-  FileCode,
 } from 'lucide-react';
 import { api } from '../../lib/api';
 import { VexStatement, VexStatus, VexJustification, Project, Release } from '../../types';
@@ -23,7 +21,6 @@ export const VexView: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [releases, setReleases] = useState<Release[]>([]);
   const [selectedVex, setSelectedVex] = useState<VexStatement | null>(null);
-  const [loading, setLoading] = useState(true);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,7 +50,6 @@ export const VexView: React.FC = () => {
     if (statements.length > 0 && !selectedVex) {
       setSelectedVex(statements[0]);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -118,57 +114,57 @@ export const VexView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e5e7eb] pb-4">
+    <div className="space-y-6">
+      {/* PAGE HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-[18px] font-semibold text-[#111827]">VEX Exploitability Management</h1>
-          <p className="text-[12px] text-[#6b7280] mt-0.5">
+          <h1 className="text-[24px] font-bold text-[#111827] tracking-tight">
+            VEX Exploitability Management
+          </h1>
+          <p className="text-[13px] text-[#6b7280] mt-0.5">
             Formulate, peer-review, and export standardized Vulnerability Exploitability eXchange (VEX) statements.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="primary"
-            size="sm"
-            icon={<Plus size={13} />}
-            onClick={() => setIsModalOpen(true)}
-          >
-            Create VEX Statement
-          </Button>
-        </div>
+
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="inline-flex items-center gap-1.5 h-8 px-3.5 text-[12.5px] font-semibold text-black bg-[#a3e635] hover:bg-[#84cc16] rounded-[6px] transition-colors shadow-xs"
+        >
+          <Plus size={14} className="stroke-[2.5]" />
+          Create VEX Statement
+        </button>
       </div>
 
-      {/* Main Split Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Left Column: VEX Statements List */}
-        <div className="lg:col-span-1 space-y-2">
-          <div className="text-[12px] font-semibold text-[#374151] px-1 flex items-center justify-between">
+      {/* MAIN SPLIT GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Left Column: VEX Decisions List (Col 4) */}
+        <div className="lg:col-span-4 space-y-3">
+          <div className="text-[12px] font-bold text-[#111827] px-1 flex items-center justify-between">
             <span>Active Decisions ({vexList.length})</span>
             <span className="text-[11px] text-[#6b7280]">OpenVEX & CSAF</span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {vexList.map((stmt) => {
               const isSelected = selectedVex?.id === stmt.id;
               return (
                 <div
                   key={stmt.id}
                   onClick={() => setSelectedVex(stmt)}
-                  className={`p-3.5 rounded-[4px] border cursor-pointer transition-all ${
+                  className={`p-4 rounded-[8px] border cursor-pointer transition-all shadow-2xs ${
                     isSelected
-                      ? 'border-[#1677ff] bg-[#f0f7ff]/40 shadow-2xs'
+                      ? 'border-[#111827] bg-[#f7fee7]/40 ring-1 ring-[#111827]'
                       : 'border-[#e5e7eb] bg-white hover:bg-[#fbfbfc]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-mono font-bold text-[13px] text-[#111827]">
+                    <span className="font-mono font-bold text-[13.5px] text-[#111827]">
                       {stmt.vuln_id}
                     </span>
                     <VexStatusBadge status={stmt.status} />
                   </div>
 
-                  <p className="text-[12px] text-[#4b5563] line-clamp-2 mb-2">
+                  <p className="text-[12px] text-[#4b5563] line-clamp-2 mb-2.5 leading-relaxed">
                     {stmt.statement_notes}
                   </p>
 
@@ -192,12 +188,12 @@ export const VexView: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: VEX Statement Detail & Audit History */}
-        <div className="lg:col-span-2">
+        {/* Right Column: VEX Details & Audit History (Col 8) */}
+        <div className="lg:col-span-8">
           {selectedVex ? (
-            <div className="border border-[#e5e7eb] rounded-[4px] bg-white p-5 space-y-5">
-              {/* Card Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e5e7eb] pb-4">
+            <div className="rounded-[8px] border border-[#e5e7eb] bg-white p-5 shadow-2xs space-y-5">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#f0f0f0] pb-4">
                 <div>
                   <div className="flex items-center gap-2.5">
                     <h2 className="font-mono text-[16px] font-bold text-[#111827]">
@@ -208,60 +204,58 @@ export const VexView: React.FC = () => {
                       <Badge variant="success">Approved</Badge>
                     )}
                   </div>
-                  <div className="text-[11px] text-[#6b7280] mt-1">
-                    Author: <span className="font-medium text-[#111827]">{selectedVex.author_name}</span> • Created {new Date(selectedVex.created_at).toLocaleString()}
+                  <div className="text-[11.5px] text-[#6b7280] mt-1">
+                    Author: <span className="font-semibold text-[#111827]">{selectedVex.author_name}</span> • Created {new Date(selectedVex.created_at).toLocaleString()}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    icon={<Download size={13} />}
-                    onClick={() => handleExportJson(selectedVex)}
-                  >
-                    Export OpenVEX
-                  </Button>
-                </div>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  icon={<Download size={13} />}
+                  onClick={() => handleExportJson(selectedVex)}
+                >
+                  Export OpenVEX
+                </Button>
               </div>
 
               {/* Justification & Impact */}
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 {selectedVex.justification && (
                   <div>
-                    <label className="text-[11px] font-medium uppercase tracking-wider text-[#6b7280] block mb-1">
+                    <label className="text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af] block mb-1">
                       Formal Justification Code (CSAF / OpenVEX Standard)
                     </label>
-                    <div className="text-[12px] font-mono bg-[#f7f8fa] border border-[#e5e7eb] px-2.5 py-1.5 rounded-[4px] text-[#111827]">
+                    <div className="text-[12px] font-mono bg-[#fafafa] border border-[#e5e7eb] px-3 py-2 rounded-[6px] text-[#111827]">
                       {selectedVex.justification}
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <label className="text-[11px] font-medium uppercase tracking-wider text-[#6b7280] block mb-1">
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af] block mb-1">
                     Technical Evidence & Impact Statement
                   </label>
-                  <div className="p-3 bg-[#fafafa] border border-[#e5e7eb] rounded-[4px] text-[12px] text-[#374151] leading-relaxed">
+                  <div className="p-3 bg-[#fafafa] border border-[#e5e7eb] rounded-[6px] text-[12.5px] text-[#374151] leading-relaxed">
                     {selectedVex.statement_notes}
                   </div>
                 </div>
               </div>
 
               {/* Decision Audit History Timeline */}
-              <div className="pt-4 border-t border-[#e5e7eb]">
-                <div className="flex items-center gap-2 mb-3">
-                  <History size={14} className="text-[#1677ff]" />
-                  <h3 className="text-[13px] font-semibold text-[#111827]">Decision History & Audit Trail</h3>
+              <div className="pt-4 border-t border-[#f0f0f0]">
+                <div className="flex items-center gap-2 mb-3.5">
+                  <History size={15} className="text-[#111827]" />
+                  <h3 className="text-[13.5px] font-bold text-[#111827]">Decision History & Audit Trail</h3>
                 </div>
 
                 <div className="space-y-3 relative before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[1px] before:bg-[#e5e7eb]">
                   {selectedVex.decision_history.map((record, idx) => (
                     <div key={record.id || idx} className="flex items-start gap-3 pl-5 relative">
-                      <div className="w-2 h-2 rounded-full bg-[#1677ff] absolute left-1 top-1.5 -translate-x-1/2" />
-                      <div className="flex-1 bg-[#fbfbfc] p-2.5 rounded border border-[#e5e7eb]">
+                      <div className="w-2 h-2 rounded-full bg-[#111827] absolute left-1 top-1.5 -translate-x-1/2" />
+                      <div className="flex-1 bg-[#f9fafb] p-3 rounded-[6px] border border-[#f0f0f0]">
                         <div className="flex items-center justify-between text-[11px] mb-1">
-                          <span className="font-semibold text-[#111827]">{record.author_name} ({record.author_email})</span>
+                          <span className="font-bold text-[#111827]">{record.author_name} ({record.author_email})</span>
                           <span className="text-[#9ca3af]">{new Date(record.timestamp).toLocaleString()}</span>
                         </div>
                         <div className="text-[12px] text-[#4b5563]">{record.notes}</div>
@@ -277,8 +271,8 @@ export const VexView: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="p-8 border border-dashed border-[#e5e7eb] rounded text-center text-[#9ca3af] text-[12px]">
-              Select a VEX decision record to view justification evidence and audit trail.
+            <div className="p-8 border border-dashed border-[#e5e7eb] rounded-[8px] text-center text-[#9ca3af] text-[12px] bg-white">
+              Select a VEX decision record to view justification evidence.
             </div>
           )}
         </div>
@@ -301,7 +295,7 @@ export const VexView: React.FC = () => {
               <select
                 value={targetProjectId}
                 onChange={(e) => setTargetProjectId(e.target.value)}
-                className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#1677ff]"
+                className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#111827]"
               >
                 {projects.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -318,10 +312,10 @@ export const VexView: React.FC = () => {
               <input
                 type="text"
                 required
-                placeholder="CVE-2023-xxxxx or GHSA-xxxx"
+                placeholder="CVE-2023-xxxxx"
                 value={vulnId}
                 onChange={(e) => setVulnId(e.target.value)}
-                className="w-full h-8 px-2.5 text-[12px] font-mono border border-[#e5e7eb] rounded-[4px] focus:outline-none focus:border-[#1677ff]"
+                className="w-full h-8 px-2.5 text-[12px] font-mono border border-[#e5e7eb] rounded-[4px] focus:outline-none focus:border-[#111827]"
               />
             </div>
           </div>
@@ -334,7 +328,7 @@ export const VexView: React.FC = () => {
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as VexStatus)}
-                className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#1677ff]"
+                className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#111827]"
               >
                 <option value="not_affected">Not Affected</option>
                 <option value="affected">Affected</option>
@@ -351,7 +345,7 @@ export const VexView: React.FC = () => {
                 <select
                   value={justification}
                   onChange={(e) => setJustification(e.target.value as VexJustification)}
-                  className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#1677ff]"
+                  className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#111827]"
                 >
                   <option value="inline_mitigations_already_exist">
                     inline_mitigations_already_exist
@@ -361,9 +355,6 @@ export const VexView: React.FC = () => {
                   </option>
                   <option value="vulnerable_code_not_in_execute_path">
                     vulnerable_code_not_in_execute_path
-                  </option>
-                  <option value="vulnerable_code_not_present">
-                    vulnerable_code_not_present
                   </option>
                   <option value="component_not_present">
                     component_not_present
@@ -380,10 +371,10 @@ export const VexView: React.FC = () => {
             <textarea
               rows={4}
               required
-              placeholder="Explain why this vulnerability does not impact this product version (e.g., reverse proxy rate-limiting, dead-code elimination, network boundaries)..."
+              placeholder="Explain why this vulnerability does not impact this product release..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full p-2.5 text-[12px] border border-[#e5e7eb] rounded-[4px] focus:outline-none focus:border-[#1677ff]"
+              className="w-full p-2.5 text-[12px] border border-[#e5e7eb] rounded-[4px] focus:outline-none focus:border-[#111827]"
             />
           </div>
 
@@ -391,9 +382,13 @@ export const VexView: React.FC = () => {
             <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
-            <Button variant="primary" type="submit" loading={submitting}>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="px-3.5 py-1.5 text-[12.5px] font-semibold text-black bg-[#a3e635] hover:bg-[#84cc16] rounded-[4px] transition-colors"
+            >
               Save VEX Decision
-            </Button>
+            </button>
           </div>
         </form>
       </Modal>

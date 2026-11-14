@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  PackageCheck,
+  Package,
   Download,
   Plus,
-  ShieldCheck,
   Hash,
-  FileText,
   FileCode,
   Archive,
   CheckCircle2,
@@ -21,7 +19,6 @@ export const EvidenceView: React.FC = () => {
   const [selectedPkg, setSelectedPkg] = useState<EvidencePackage | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [releases, setReleases] = useState<Release[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // Modal State
   const [isGenerateOpen, setIsGenerateOpen] = useState(false);
@@ -45,7 +42,6 @@ export const EvidenceView: React.FC = () => {
     if (pkgList.length > 0 && !selectedPkg) {
       setSelectedPkg(pkgList[0]);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -64,63 +60,64 @@ export const EvidenceView: React.FC = () => {
   };
 
   const handleDownload = (pkg: EvidencePackage) => {
-    // Direct link to backend download endpoint
     window.location.href = `/api/v1/evidence/packages/${pkg.id}/download`;
   };
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e5e7eb] pb-4">
+    <div className="space-y-6">
+      {/* PAGE HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-[18px] font-semibold text-[#111827]">Security Evidence Center</h1>
-          <p className="text-[12px] text-[#6b7280] mt-0.5">
+          <h1 className="text-[24px] font-bold text-[#111827] tracking-tight">
+            Security Evidence Center
+          </h1>
+          <p className="text-[13px] text-[#6b7280] mt-0.5">
             Assemble, verify, and export tamper-evident release packages with cryptographic SHA-256 manifests.
           </p>
         </div>
-        <Button
-          variant="primary"
-          size="sm"
-          icon={<Plus size={13} />}
+
+        <button
           onClick={() => setIsGenerateOpen(true)}
+          className="inline-flex items-center gap-1.5 h-8 px-3.5 text-[12.5px] font-semibold text-black bg-[#a3e635] hover:bg-[#84cc16] rounded-[6px] transition-colors shadow-xs"
         >
+          <Plus size={14} className="stroke-[2.5]" />
           Generate Evidence Package
-        </Button>
+        </button>
       </div>
 
-      {/* Main Split Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Left Column: Evidence Packages List */}
-        <div className="lg:col-span-1 space-y-2">
-          <div className="text-[12px] font-semibold text-[#374151] px-1 flex items-center justify-between">
+      {/* MAIN SPLIT GRID */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Left Column: Evidence Packages (Col 4) */}
+        <div className="lg:col-span-4 space-y-3">
+          <div className="text-[12px] font-bold text-[#111827] px-1 flex items-center justify-between">
             <span>Release Evidence Bundles ({packages.length})</span>
             <span className="text-[11px] text-[#16a34a] font-medium flex items-center gap-1">
               <CheckCircle2 size={12} /> Verified
             </span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {packages.map((pkg) => {
               const isSelected = selectedPkg?.id === pkg.id;
               return (
                 <div
                   key={pkg.id}
                   onClick={() => setSelectedPkg(pkg)}
-                  className={`p-3.5 rounded-[4px] border cursor-pointer transition-all ${
+                  className={`p-4 rounded-[8px] border cursor-pointer transition-all shadow-2xs ${
                     isSelected
-                      ? 'border-[#1677ff] bg-[#f0f7ff]/40 shadow-2xs'
+                      ? 'border-[#111827] bg-[#f7fee7]/40 ring-1 ring-[#111827]'
                       : 'border-[#e5e7eb] bg-white hover:bg-[#fbfbfc]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-semibold text-[13px] text-[#111827] flex items-center gap-1.5">
-                      <Archive size={14} className="text-[#1677ff]" />
+                    <span className="font-bold text-[13.5px] text-[#111827] flex items-center gap-1.5">
+                      <Archive size={15} className="text-[#111827]" />
                       Release {pkg.package_version}
                     </span>
                     <Badge variant="success">SHA-256 Sealed</Badge>
                   </div>
 
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#6b7280] truncate mb-2">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#6b7280] truncate mb-2.5">
                     <Hash size={12} className="shrink-0 text-[#9ca3af]" />
                     <span className="truncate">{pkg.sha256_hash}</span>
                   </div>
@@ -135,15 +132,15 @@ export const EvidenceView: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Evidence Package Manifest & Artifact Inspector */}
-        <div className="lg:col-span-2">
+        {/* Right Column: Manifest & Artifacts (Col 8) */}
+        <div className="lg:col-span-8">
           {selectedPkg ? (
-            <div className="border border-[#e5e7eb] rounded-[4px] bg-white p-5 space-y-5">
+            <div className="rounded-[8px] border border-[#e5e7eb] bg-white p-5 shadow-2xs space-y-5">
               {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e5e7eb] pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#f0f0f0] pb-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-[15px] font-semibold text-[#111827]">
+                    <h2 className="text-[16px] font-bold text-[#111827]">
                       Evidence Package: {selectedPkg.package_version}
                     </h2>
                     <Badge variant="primary">ZIP Archive</Badge>
@@ -154,7 +151,7 @@ export const EvidenceView: React.FC = () => {
                 </div>
 
                 <Button
-                  variant="primary"
+                  variant="secondary"
                   size="sm"
                   icon={<Download size={13} />}
                   onClick={() => handleDownload(selectedPkg)}
@@ -165,23 +162,23 @@ export const EvidenceView: React.FC = () => {
 
               {/* Package Manifest Table */}
               <div>
-                <h3 className="text-[12px] font-semibold uppercase tracking-wider text-[#6b7280] mb-2">
+                <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[#9ca3af] mb-2.5">
                   Package Manifest & Artifact Integrity
                 </h3>
-                <div className="border border-[#e5e7eb] rounded-[4px] overflow-hidden">
+                <div className="border border-[#e5e7eb] rounded-[6px] overflow-hidden">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-[#e5e7eb] bg-[#f7f8fa] text-[11px] font-medium text-[#6b7280] uppercase tracking-wider">
+                      <tr className="bg-[#f9fafb] text-[11px] font-semibold text-[#9ca3af] uppercase tracking-wider border-b border-[#e5e7eb]">
                         <th className="px-3.5 py-2">Artifact File</th>
                         <th className="px-3.5 py-2">Type</th>
                         <th className="px-3.5 py-2">SHA-256 Checksum</th>
                         <th className="px-3.5 py-2">Size</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#e5e7eb] text-[12px]">
+                    <tbody className="divide-y divide-[#f0f0f0] text-[12px]">
                       {selectedPkg.file_entries.map((f, idx) => (
                         <tr key={idx} className="hover:bg-[#fbfbfc]">
-                          <td className="px-3.5 py-2.5 font-mono text-[#111827] flex items-center gap-2">
+                          <td className="px-3.5 py-2.5 font-mono text-[#111827] flex items-center gap-2 font-medium">
                             <FileCode size={13} className="text-[#6b7280]" />
                             {f.file_name}
                           </td>
@@ -201,19 +198,19 @@ export const EvidenceView: React.FC = () => {
                 </div>
               </div>
 
-              {/* Technical Description Box */}
-              <div className="p-3 bg-[#fbfbfc] border border-[#e5e7eb] rounded-[4px] text-[11px] text-[#4b5563] space-y-1">
-                <div className="font-semibold text-[#111827]">
+              {/* Integrity Box */}
+              <div className="p-3 bg-[#fafafa] border border-[#e5e7eb] rounded-[6px] text-[11.5px] text-[#4b5563] space-y-1">
+                <div className="font-bold text-[#111827]">
                   Cryptographic Integrity Guarantee:
                 </div>
                 <div>
-                  This release evidence package conforms to the VulnLedger Tamper-Evident Manifest Standard. Each individual artifact is hashed at build-time with SHA-256, sealed inside <span className="font-mono text-[#111827]">manifest.json</span>, and archived.
+                  Each artifact inside this package is hashed at build-time with SHA-256, cryptographically sealed inside <span className="font-mono text-[#111827]">manifest.json</span>, and archived.
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-8 border border-dashed border-[#e5e7eb] rounded text-center text-[#9ca3af] text-[12px]">
-              Select a release evidence package to inspect artifacts and download.
+            <div className="p-8 border border-dashed border-[#e5e7eb] rounded-[8px] text-center text-[#9ca3af] text-[12px] bg-white">
+              Select an evidence package to view manifest.
             </div>
           )}
         </div>
@@ -224,7 +221,7 @@ export const EvidenceView: React.FC = () => {
         isOpen={isGenerateOpen}
         onClose={() => setIsGenerateOpen(false)}
         title="Generate Release Evidence Package"
-        description="Bundle the release SBOM, active VEX statements, scanner logs, and manifest into a downloadable cryptographic archive."
+        description="Bundle the release SBOM, active VEX statements, and manifest into a downloadable cryptographic archive."
       >
         <form onSubmit={handleGenerate} className="space-y-3.5">
           <div>
@@ -239,7 +236,7 @@ export const EvidenceView: React.FC = () => {
                 setReleases(rels);
                 if (rels.length > 0) setTargetReleaseId(rels[0].id);
               }}
-              className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#1677ff]"
+              className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#111827]"
             >
               {projects.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -256,7 +253,7 @@ export const EvidenceView: React.FC = () => {
             <select
               value={targetReleaseId}
               onChange={(e) => setTargetReleaseId(e.target.value)}
-              className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#1677ff]"
+              className="w-full h-8 px-2 text-[12px] border border-[#e5e7eb] rounded-[4px] bg-white focus:outline-none focus:border-[#111827]"
             >
               {releases.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -270,9 +267,13 @@ export const EvidenceView: React.FC = () => {
             <Button variant="secondary" onClick={() => setIsGenerateOpen(false)}>
               Cancel
             </Button>
-            <Button variant="primary" type="submit" loading={generating}>
+            <button
+              type="submit"
+              disabled={generating}
+              className="px-3.5 py-1.5 text-[12.5px] font-semibold text-black bg-[#a3e635] hover:bg-[#84cc16] rounded-[4px] transition-colors"
+            >
               Assemble & Fingerprint
-            </Button>
+            </button>
           </div>
         </form>
       </Modal>

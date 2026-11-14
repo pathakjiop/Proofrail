@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Scale,
   CheckCircle2,
   Circle,
-  AlertCircle,
-  ExternalLink,
-  ShieldCheck,
-  FileText,
   Info,
 } from 'lucide-react';
 import { Badge } from '../../components/common/Badge';
-import { Button } from '../../components/common/Button';
 
 interface ChecklistItem {
   id: string;
@@ -90,78 +84,82 @@ export const CraReadinessView: React.FC = () => {
   const percentage = Math.round((completedCount / items.length) * 100);
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#e5e7eb] pb-4">
+    <div className="space-y-6">
+      {/* PAGE HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-[18px] font-semibold text-[#111827]">
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-[24px] font-bold text-[#111827] tracking-tight">
               EU Cyber Resilience Act (CRA) Technical Readiness
             </h1>
-            <Badge variant="primary">Readiness Dossier</Badge>
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#f3f4f6] text-[#4b5563]">
+              Beta
+            </span>
           </div>
-          <p className="text-[12px] text-[#6b7280] mt-0.5">
+          <p className="text-[13px] text-[#6b7280] mt-0.5">
             Organize technical evidence, SBOMs, and VEX statements required for supply chain regulation.
           </p>
         </div>
       </div>
 
-      {/* Mandatory Disclaimer Box */}
-      <div className="p-3 bg-[#f0f5ff] border border-[#bfdbfe] rounded-[4px] flex items-start gap-2.5 text-[12px] text-[#1e40af]">
-        <Info size={16} className="shrink-0 mt-0.5 text-[#2563eb]" />
+      {/* NOTICE BOX */}
+      <div className="p-3.5 bg-white border border-[#e5e7eb] rounded-[8px] flex items-start gap-3 text-[12.5px] text-[#374151] shadow-2xs">
+        <Info size={17} className="shrink-0 mt-0.5 text-[#111827]" />
         <div>
-          <span className="font-semibold">Technical Evidence Management Notice:</span> VulnLedger helps engineering teams collect, structure, and verify the technical evidence required under the Cyber Resilience Act. Completing this checklist assists with regulatory preparation but does not constitute automated legal certification.
+          <span className="font-bold text-[#111827]">Technical Evidence Management Notice:</span> VulnLedger helps engineering teams collect, structure, and verify the technical evidence required under the Cyber Resilience Act. Completing this checklist assists with regulatory preparation but does not constitute automated legal certification.
         </div>
       </div>
 
-      {/* Readiness Progress Bar */}
-      <div className="p-4 border border-[#e5e7eb] rounded-[4px] bg-white">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-[13px] font-semibold text-[#111827]">
+      {/* READINESS PROGRESS CARD */}
+      <div className="p-5 border border-[#e5e7eb] rounded-[8px] bg-white shadow-2xs space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-[14px] font-bold text-[#111827]">
             Technical Evidence Completeness
           </span>
-          <span className="text-[13px] font-bold text-[#1677ff]">{percentage}%</span>
+          <span className="text-[16px] font-extrabold text-[#111827]">{percentage}%</span>
         </div>
-        <div className="w-full h-2 bg-[#f0f0f0] rounded-full overflow-hidden">
+
+        <div className="w-full h-3 bg-[#f0f0f0] rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#1677ff] rounded-full transition-all duration-300"
+            className="h-full bg-[#a3e635] rounded-full transition-all duration-500"
             style={{ width: `${percentage}%` }}
           />
         </div>
-        <div className="text-[11px] text-[#6b7280] mt-2 flex justify-between">
+
+        <div className="text-[12px] text-[#6b7280] flex justify-between pt-1">
           <span>{completedCount} of {items.length} technical controls verified</span>
-          <span className="text-[#16a34a] font-medium">Ready for Release Audit</span>
+          <span className="text-[#15803d] font-semibold">Ready for Release Audit</span>
         </div>
       </div>
 
-      {/* Checklist Items */}
-      <div className="border border-[#e5e7eb] rounded-[4px] bg-white overflow-hidden divide-y divide-[#e5e7eb]">
+      {/* CHECKLIST */}
+      <div className="border border-[#e5e7eb] rounded-[8px] bg-white overflow-hidden divide-y divide-[#f0f0f0] shadow-2xs">
         {items.map((item) => (
           <div
             key={item.id}
             onClick={() => toggleItem(item.id)}
-            className="p-4 flex items-start gap-3.5 hover:bg-[#fbfbfc] cursor-pointer transition-colors"
+            className="p-4.5 flex items-start gap-3.5 hover:bg-[#fbfbfc] cursor-pointer transition-colors"
           >
-            <button className="mt-0.5 text-[#1677ff] shrink-0">
+            <button className="mt-0.5 shrink-0">
               {item.completed ? (
-                <CheckCircle2 size={17} className="text-[#16a34a]" />
+                <CheckCircle2 size={18} className="text-[#16a34a]" />
               ) : (
-                <Circle size={17} className="text-[#d1d5db]" />
+                <Circle size={18} className="text-[#d1d5db]" />
               )}
             </button>
 
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
-                <span className={`text-[13px] font-semibold ${item.completed ? 'text-[#111827]' : 'text-[#4b5563]'}`}>
+                <span className={`text-[13.5px] font-bold ${item.completed ? 'text-[#111827]' : 'text-[#6b7280]'}`}>
                   {item.title}
                 </span>
-                <span className="text-[10px] font-mono text-[#6b7280] bg-[#f7f8fa] px-1.5 py-0.5 rounded border border-[#e5e7eb]">
+                <span className="text-[10.5px] font-mono text-[#6b7280] bg-[#f9fafb] px-2 py-0.5 rounded border border-[#e5e7eb]">
                   {item.reference}
                 </span>
               </div>
-              <p className="text-[12px] text-[#4b5563] mb-2">{item.description}</p>
+              <p className="text-[12.5px] text-[#4b5563] mb-2 leading-relaxed">{item.description}</p>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-[#6b7280]">Target Evidence:</span>
+                <span className="text-[11px] text-[#9ca3af]">Target Evidence:</span>
                 <Badge variant="neutral">{item.evidenceType}</Badge>
               </div>
             </div>
