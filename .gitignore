@@ -1,32 +1,117 @@
-# Rust
+# ==============================================================================
+# VulnLedger — Production Monorepo .gitignore
+# Covers Rust (API/CLI), TypeScript/React (Vite), Storage, Secrets & OS Artifacts
+# ==============================================================================
+
+# --- Rust & Cargo -------------------------------------------------------------
 target/
 **/*.rs.bk
-Cargo.lock
+*.pdb
+*.profraw
+*.profdata
+cargo-install*
 
-# Node / Web
+# Note: We intentionally track Cargo.lock in git because this repository builds
+# executable binaries (vulnledger-api and vulnledger-cli) to guarantee reproducible builds.
+
+# --- Node.js & Web Frontend (apps/web) ----------------------------------------
 node_modules/
+.pnp/
+.pnp.js
 dist/
+dist-ssr/
+build/
 .vite/
+*.tsbuildinfo
+
+# Package manager debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# Environment
+# --- VulnLedger Storage & Local Runtime Data -----------------------------------
+# Local artifact store (uploaded SBOMs, scans, generated evidence packages)
+storage/
+!storage/.gitkeep
+
+# Local SQLite databases (used during local/offline testing)
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Local CLI configuration containing private developer tokens
+.vulnledger.toml
+
+# Generated evidence archives and exports
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# --- Environment & Secret Keys (Strict Security Baseline) --------------------
 .env
-*.local
-*.env.local
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# IDE & OS
-.vscode/
+# Explicitly keep example environment templates version-controlled
+!.env.example
+
+# Cryptographic private keys and certificates
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# --- Docker & Container Overrides ---------------------------------------------
+docker-compose.override.yml
+
+# --- Testing & Coverage -------------------------------------------------------
+coverage/
+*.lcov
+.nyc_output/
+
+# --- Operating Systems --------------------------------------------------------
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+
+# --- IDEs & Code Editors ------------------------------------------------------
 .idea/
 *.swp
 *.swo
-.DS_Store
-Thumbs.db
+*~
+*.sublime-project
+*.sublime-workspace
 
-# Storage / Artifacts
-storage/uploads/
-storage/exports/
-*.zip
-*.tar.gz
+# Visual Studio Code (ignore user state, preserve shared workspace recommendations)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
